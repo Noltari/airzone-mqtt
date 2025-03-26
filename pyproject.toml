@@ -4,7 +4,7 @@ version = "0.0.3"
 description = "Library to control Airzone MQTT devices"
 readme = "README.md"
 requires-python = ">=3.12"
-license-files = ["LICENSE"]
+license = "Apache-2.0"
 keywords = ["airzone", "hvac", "home", "mqtt"] 
 authors = [
   {name = "Álvaro Fernández Rojas", email = "noltari@gmail.com" }
