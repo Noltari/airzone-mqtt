@@ -171,12 +171,12 @@ class AirzoneMqttApi:
         if device_type == API_AZ_SYSTEM:
             system = self.get_system(system_id, device_id)
             if system is not None:
-                system.update(data, UpdateType.PARTIAL)
+                system.update(body, UpdateType.PARTIAL)
                 self.update_callback(data)
         elif device_type == API_AZ_ZONE:
             zone = self.get_zone(system_id, device_id)
             if zone is not None:
-                zone.update(data, UpdateType.PARTIAL)
+                zone.update(body, UpdateType.PARTIAL)
                 self.update_callback(data)
         else:
             _LOGGER.warning(
