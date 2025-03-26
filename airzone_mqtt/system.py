@@ -31,4 +31,4 @@ class System(Device):
         super().update(data, update_type)
 
         if update_type == UpdateType.PARTIAL:
-            _LOGGER.warning("System[%s] updated with data=%s", self.get_id(), data)
+            _LOGGER.debug("System[%s] updated with data=%s", self.get_id(), data)
