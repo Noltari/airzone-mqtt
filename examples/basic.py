@@ -2,11 +2,17 @@
 
 import asyncio
 import json
+from typing import Any
 
 from _secrets import MQTT_TOPIC
 from mqtt import AirzoneMqttHelper
 
 from airzone_mqtt.mqttapi import AirzoneMqttApi
+
+
+def update_callback(data: dict[str, Any]) -> None:
+    """Update callback function."""
+    print(f"update_callback: data_len={len(data)}")
 
 
 async def main() -> None:
@@ -15,6 +21,7 @@ async def main() -> None:
     mqtt_helper = AirzoneMqttHelper()
 
     airzone_mqtt.mqtt_publish = mqtt_helper.publish
+    airzone_mqtt.set_update_callback(update_callback)
     mqtt_helper.msg_callback = airzone_mqtt.msg_callback
 
     mqtt_helper.connect_helper()

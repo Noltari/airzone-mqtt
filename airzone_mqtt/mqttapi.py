@@ -52,7 +52,6 @@ class AirzoneMqttApi:
     """Airzone MQTT API."""
 
     callback_function: Callable[[dict[str, Any]], None] | None
-    callback_lock: asyncio.Lock
     mqtt_publish: Callable[[str, PayloadType, int, bool], Coroutine[Any, Any, None]]
 
     def __init__(self, mqtt_topic: str) -> None:
@@ -65,7 +64,7 @@ class AirzoneMqttApi:
         self.api_resp: asyncio.Event = asyncio.Event()
         self.api_req_id: str = ""
         self.callback_function = None
-        self.callback_lock = asyncio.Lock()
+        self.callback_lock: asyncio.Lock = asyncio.Lock()
         self.loop = asyncio.get_running_loop()
         self.mqtt_prefix: str = f"{mqtt_topic}/{AMT_V1}"
         self.mqtt_topic: str = mqtt_topic
@@ -324,8 +323,8 @@ class AirzoneMqttApi:
 
     async def _update_callback(self) -> None:
         """Perform update callback."""
-        if self.callback_function:
-            async with self.callback_lock:
+        async with self.callback_lock:
+            if self.callback_function:
                 self.callback_function(self.data())
 
     def update_callback(self, data: dict[str, Any]) -> None:
@@ -336,8 +335,7 @@ class AirzoneMqttApi:
         else:
             self.update_dt = get_current_dt()
 
-        if self.callback_function:
-            asyncio.ensure_future(self._update_callback())
+        asyncio.run_coroutine_threadsafe(self._update_callback(), self.loop)
 
     def set_update_callback(
         self, callback_function: Callable[[dict[str, Any]], None]
