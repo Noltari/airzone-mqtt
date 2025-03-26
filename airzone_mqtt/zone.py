@@ -241,4 +241,4 @@ class Zone(Device):
             self.zone_work_temp = float(zone_work_temp)
 
         if update_type == UpdateType.PARTIAL:
-            _LOGGER.warning("Zone[%s] updated with data=%s", self.get_id(), data)
+            _LOGGER.debug("Zone[%s] updated with data=%s", self.get_id(), data)
